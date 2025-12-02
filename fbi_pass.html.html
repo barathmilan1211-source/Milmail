@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<title>MILCSI FBI PASS</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+    body {
+        background: radial-gradient(circle, #000428, #000);
+        font-family: Arial, sans-serif;
+        color: white;
+        text-align: center;
+        padding: 0;
+        margin: 0;
+    }
+
+    h1 {
+        margin-top: 30px;
+        font-size: 38px;
+        text-shadow: 0 0 10px #00aaff;
+        letter-spacing: 3px;
+    }
+
+    .login-box {
+        width: 330px;
+        margin: 30px auto;
+        background: rgba(0,0,0,0.6);
+        padding: 25px;
+        border-radius: 12px;
+        border: 2px solid #007bff;
+        box-shadow: 0 0 20px #007bff;
+    }
+
+    input {
+        width: 95%;
+        padding: 10px;
+        margin-top: 10px;
+        border-radius: 6px;
+        border: none;
+        outline: none;
+        background: #0a0a0a;
+        color: #00d0ff;
+        box-shadow: inset 0 0 10px #005f9e;
+    }
+
+    button {
+        width: 100%;
+        padding: 12px;
+        margin-top: 15px;
+        background: linear-gradient(90deg, #001f3f, #007bff, #00d0ff);
+        border: none;
+        color: white;
+        font-weight: bold;
+        font-size: 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        box-shadow: 0 0 15px #00aaff;
+        transition: 0.3s;
+    }
+
+    button:hover {
+        background: linear-gradient(90deg, #ff0000, #cc0000);
+        box-shadow: 0 0 25px #ff0000;
+    }
+
+    .denied {
+        color: #ff0000;
+        font-size: 26px;
+        font-weight: bold;
+        text-shadow: 0 0 15px red;
+        margin-top: 15px;
+        display: none;
+    }
+
+    .granted {
+        color: #00ff00;
+        font-size: 26px;
+        font-weight: bold;
+        text-shadow: 0 0 15px lime;
+        margin-top: 15px;
+        display: none;
+    }
+
+    .id-card {
+        margin: 20px auto;
+        width: 340px;
+        padding: 20px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #1a1a1a, #000428);
+        border: 3px solid gold;
+        box-shadow: 0 0 25px gold;
+        display: none;
+        text-align: left;
+    }
+
+    .id-card h2 {
+        color: gold;
+        text-shadow: 0 0 10px gold;
+    }
+
+    .id-card p {
+        font-size: 17px;
+        margin: 6px 0;
+    }
+
+    .topsecret {
+        color: red;
+        font-size: 22px;
+        font-weight: bold;
+        text-shadow: 0 0 10px red;
+        margin-top: 10px;
+    }
+
+</style>
+</head>
+
+<body>
+
+<h1>MILCSI FBI PASS SYSTEM</h1>
+
+<div class="login-box">
+    <input id="name" type="text" placeholder="Név">
+    <input id="pin" type="text" placeholder="Jelszó">
+    <input id="pass" type="text" placeholder="FBI PASS kód">
+
+    <button onclick="login()">BELÉPÉS</button>
+
+    <div class="denied" id="denied">ACCESS DENIED – WRONG CODE</div>
+    <div class="granted" id="granted">ACCESS GRANTED</div>
+</div>
+
+<div class="id-card" id="idcard">
+    <h2>FBI IDENTIFICATION CARD</h2>
+    <p><b>Név:</b> <span id="cardName"></span></p>
+    <p><b>Ügynök ID:</b> <span id="cardID"></span></p>
+    <p><b>Rang:</b> <span id="cardRank"></span></p>
+
+    <div class="topsecret">TOP SECRET CLEARANCE</div>
+
+    <p style="margin-top:20px;">
+        Titkos meghívó aktiválva!  
+        A belépés engedélyezve a Milcsi Szülinapi Központba.
+    </p>
+</div>
+
+<script>
+const users = {
+    "Varga Vince":       { pin:"1231", pass:"sk-7fdfd6756ds4" },
+    "Farkas Vince":      { pin:"5643", pass:"sk-678tdewfasds" },
+    "Császi Nándor":     { pin:"2376", pass:"sk-hzt654k9z65" },
+    "Pocsanyi Barnabás": { pin:"5346", pass:"sk-7tbtg565trmi" },
+    "Sztankó Dániel":    { pin:"5664", pass:"sk-4r5g6f3hh8r5" },
+    "Gorzsás Dávid":     { pin:"6527", pass:"sk-6zligh645z71" },
+    "Baráth Milán (admin)": { pin:"5356", pass:"sk-712jd3h71eq3" },
+    "Bakk Ádám":         { pin:"2345", pass:"sk-7shd8ztdht65" },
+    "Oláh Ádám":         { pin:"2341", pass:"sk-hst2at342eh6" }
+};
+
+function login() {
+    let name = document.getElementById("name").value.trim();
+    let pin  = document.getElementById("pin").value.trim();
+    let pass = document.getElementById("pass").value.trim();
+
+    if (users[name] && users[name].pin === pin && users[name].pass === pass) {
+
+        document.getElementById("denied").style.display = "none";
+        document.getElementById("granted").style.display = "block";
+
+        setTimeout(()=>{
+            document.getElementById("granted").style.display = "none";
+            showCard(name);
+        }, 1200);
+
+    } else {
+        document.getElementById("granted").style.display = "none";
+        document.getElementById("denied").style.display = "block";
+    }
+}
+
+function showCard(name){
+    document.getElementById("idcard").style.display = "block";
+    document.getElementById("cardName").innerText = name;
+    document.getElementById("cardID").innerText = Math.floor(Math.random()*900000+100000);
+
+    if(name.includes("admin")){
+        document.getElementById("cardRank").innerText = "ADMIN CLEARANCE LEVEL 7";
+    } else {
+        document.getElementById("cardRank").innerText = "AGENT LEVEL 3";
+    }
+}
+</script>
+
+</body>
+</html>
